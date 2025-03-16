@@ -1,0 +1,9 @@
+.vagrant/
+*.log
+*.tmp
+*.swp
+*.bak
+*.old
+*.DS_Store
+.vscode/
+join-command.sh
