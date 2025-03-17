@@ -1,6 +1,6 @@
 Vagrant.configure("2") do |config|
     # Configuração do master
-    config.vm.define "control-plane" do |master|
+    config.vm.define "master01" do |master|
       master.vm.box = "ubuntu/jammy64"
       master.vm.hostname = "master01"
       master.vm.network "private_network", ip: "192.168.56.31"
@@ -18,10 +18,10 @@ Vagrant.configure("2") do |config|
   
     # Configuração dos masters (nós)
     (1..2).each do |i|
-      config.vm.define "master0#{1 + i}" do |master|
+      config.vm.define "master0#{i + 2}" do |master|
         master.vm.box = "ubuntu/jammy64"
-        master.vm.hostname = "master0#{1 + i}"
-        master.vm.network "private_network", ip: "192.168.56.#{31 + i}"
+        master.vm.hostname = "master0#{i + 2}"
+        master.vm.network "private_network", ip: "192.168.56.#{32 + i}"
   
         master.ssh.insert_key = false
         master.ssh.private_key_path = ['~/.vagrant.d/insecure_private_key', '~/.ssh/id_rsa']
