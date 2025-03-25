@@ -51,12 +51,12 @@ sudo install -m 0755 -d /etc/apt/keyrings
 sudo curl -fsSL https://download.docker.com/linux/ubuntu/gpg -o /etc/apt/keyrings/docker.asc
 sudo chmod a+r /etc/apt/keyrings/docker.asc
 
-echo \  
+echo \
   "deb [arch=$(dpkg --print-architecture) signed-by=/etc/apt/keyrings/docker.asc] https://download.docker.com/linux/ubuntu \
   $(. /etc/os-release && echo "${UBUNTU_CODENAME:-$VERSION_CODENAME}") stable" | \
   sudo tee /etc/apt/sources.list.d/docker.list > /dev/null
 
-sudo apt-get update
+  sudo apt-get update
 
 sudo apt-get install -y containerd.io
 
@@ -81,6 +81,7 @@ else
     exit 1
 fi
 
+
 # Configurando kubectl para o usuário vagrant
 echo "###############################################"
 echo "# Configurando kubectl para o usuário vagrant #"
@@ -96,6 +97,25 @@ sudo chown vagrant:vagrant "$KUBE_DIR/config"
 # Exporta o kubeconfig para garantir que o kubectl use a configuração correta
 export KUBECONFIG=/etc/kubernetes/admin.conf
 
+#Aguardar API Server estar pronto antes de instalar a rede de pods
+echo "Aguardando o API Server estar disponível..."
+
+# start_time=$(date +%s)  # Captura o tempo inicial
+
+# for i in {1..30}; do  # Tentativa por até 5 minutos (10s * 30)
+#     if kubectl get nodes --no-headers 2>/dev/null | grep -q ' Ready'; then
+#         echo "API Server está pronto!"
+#         break
+#     fi
+#     echo "Aguardando mais 10 segundos..."
+#     sleep 10
+# done
+
+# end_time=$(date +%s)  # Captura o tempo final
+# elapsed_time=$((end_time - start_time))  # Calcula a duração
+
+# echo "Tempo total de espera: ${elapsed_time} segundos"
+
 # Instalando rede de pods (Flannel)
 echo "######################################"
 echo "# Instalando a rede de pods (Flannel) #"
@@ -108,7 +128,7 @@ else
     exit 1
 fi
 
-# Extraindo token para os workers
+# Extraindo token para os 
 echo "###################################"
 echo "# Extraindo token para os workers #"
 echo "###################################"
